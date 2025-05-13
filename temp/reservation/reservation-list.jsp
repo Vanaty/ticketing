@@ -50,6 +50,7 @@ List<Reservation> reservations = (List<Reservation>) request.getAttribute("reser
                                     <th>Places Annuler</th>
                                     <th>Prix</th>
                                     <th>Date</th>
+                                    <th>Status</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -61,6 +62,22 @@ List<Reservation> reservations = (List<Reservation>) request.getAttribute("reser
                                         <td><%= reservation.getNbrPlacesAnnuller() %></td>
                                         <td><%= Utilitaire.formaterAr(reservation.getPrixTotal()) %> Ar</td>
                                         <td><%= reservation.getDaty() %></td>
+                                        <td>
+                                            <span class="badge 
+                                                <% 
+                                                    if (Status.CONFIRMED.equals(reservation.getStatus())) { 
+                                                        out.print("bg-success"); 
+                                                    } else if (Status.PENDING.equals(reservation.getStatus())) { 
+                                                        out.print("bg-warning"); 
+                                                    } else if (Status.CANCELLED.equals(reservation.getStatus())) { 
+                                                        out.print("bg-danger"); 
+                                                    } else {
+                                                        out.print("bg-secondary"); 
+                                                    } 
+                                                %>">
+                                                <%= reservation.getStatus() %>
+                                            </span>
+                                        </td>
                                         <td class="d-flex flex-column">
                                             <!-- Bouton Voir plus -->
                                             <a href="<%= request.getContextPath() %>/reservation/facture?id=<%= reservation.getId() %>" class="btn btn-outline-info btn-sm mb-2" role="button">
@@ -116,18 +133,20 @@ if (request.getAttribute("message") != null) {
     String messageType = "success"; // default to success
     try {
         messageType = message.split("/")[1]; // success or error
+        message = message.split("/")[0]; // message content
     } catch (Exception e) {
         e.printStackTrace();
     }
 %>
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div class="toast align-items-center text-bg-<%= "success".equals(messageType) ? "success" : "danger" %> border-0 show" role="alert" aria-live="assertive" aria-atomic="true">
-        <div class="d-flex">
-            <div class="toast-body">
-                <%= message %>
-            </div>
-            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
+<div class="toast position-fixed bottom-0 end-0 p-3 show" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <img src="..." class="rounded me-2" alt="...">
+      <strong class="me-auto"><%= messageType%></strong>
+      <small>now</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body text-<%= (messageType == "error") ? "danger":"black" %>">
+        <%= message %>
     </div>
 </div>
 <% } %>
