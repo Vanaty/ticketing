@@ -1,0 +1,34 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee 
+                             http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <context-param>
+        <param-name>package_controleur</param-name>
+        <param-value>mg.itu.controller</param-value>
+    </context-param>
+    
+    <!-- Servlet Configuration avec un paramètre d'initialisation -->
+    <servlet>
+        <servlet-name>FrontControleur</servlet-name>
+        <servlet-class>mg.itu.controleur.FrontControleur</servlet-class>
+        
+        <!-- Paramètre d'initialisation pour le servlet -->
+        
+        <!-- <init-param>
+            <param-name>base_url</param-name>
+            <param-value>http://localhost:8080/framework</param-value>
+        </init-param> -->
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>FrontControleur</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>/assets/*</url-pattern>
+    </servlet-mapping>
+</web-app>
