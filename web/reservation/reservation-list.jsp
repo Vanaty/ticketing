@@ -133,6 +133,7 @@ if (request.getAttribute("message") != null) {
     String messageType = "success"; // default to success
     try {
         messageType = message.split("/")[1]; // success or error
+        message = message.split("/")[0]; // message content
     } catch (Exception e) {
         e.printStackTrace();
     }
@@ -144,7 +145,7 @@ if (request.getAttribute("message") != null) {
       <small>now</small>
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
-    <div class="toast-body">
+    <div class="toast-body text-<%= (messageType == "error") ? "danger":"black" %>">
         <%= message %>
     </div>
 </div>
