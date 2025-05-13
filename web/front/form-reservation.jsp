@@ -70,6 +70,35 @@
             <!-- Lien Modifier -->
             <form action="<%= request.getContextPath()%>/reservation/creation" method="post">
                 <input type="hidden" name="res.idVol" value="<%= vol.getId() %>">
+                
+                <!-- Modal for error message -->
+                <% String errorMessage = (String) request.getAttribute("errorMessage"); %>
+                <% if (errorMessage != null && !errorMessage.isEmpty()) { %>
+                    <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-danger" id="errorModalLabel">Erreur</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <%= errorMessage %>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function() {
+                            $('#errorModal').modal('show');
+                        });
+                    </script>
+                <% } %>
+                
                 <!-- Dates -->
                 <h5>Reservation</h5>
                 <div class="form-row row">
