@@ -38,7 +38,8 @@ public class ReservationService {
         LocalDateTime dateAnnulation = dp.minusHours(ReservationDAO.getConfig().getCancellationBeforeHours());
         if (dateAnnulation.isAfter(now) || dateAnnulation.isEqual(now)) {
             return reservation.getStatus() == null || reservation.getStatus().equals(Status.PENDING);
+        } else {
+            throw new RuntimeException("Reservation cannot be cancelled after the cancellation period ("+ dateAnnulation.toString() +")./error");
         }
-        return false;
     }
 }
