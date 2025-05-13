@@ -20,7 +20,9 @@ public class ReservationService {
     }
 
     public Reservation annuller(Reservation reservation) throws Exception {
-        if (reservation.getStatus().equals(Status.PENDING)) {
+        if (reservation.getStatus() == null) {
+            reservation.setStatus(Status.CANCELLED);
+        } else if (reservation.getStatus().equals(Status.PENDING)) {
             reservation.setStatus(Status.CANCELLED);
         } else {
             throw new Exception("Reservation already cancelled or confirmed");

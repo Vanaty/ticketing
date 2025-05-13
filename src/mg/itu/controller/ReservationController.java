@@ -29,10 +29,14 @@ public class ReservationController {
     @GET
     @Url("/")
     @Security(levelUser = 1, errorPage = "/auth/login.jsp")
-    public ModelView list(@Param("id") Integer id,@Param("datyMin") String datyMin, @Param("datyMax") String datyMax) throws Exception {
+    public ModelView list(@Param("id") Integer id,
+            @Param("datyMin") String datyMin, 
+            @Param("datyMax") String datyMax,
+            @Param("message") String message) throws Exception {
         ModelView mv = new ModelView("/reservation/reservation-list.jsp");
         List<Reservation> reservations = ReservationDAO.findAll(datyMin, datyMax);
         mv.addObject("reservations", reservations);
+        mv.addObject("message", message);
         return mv;
     }
 
