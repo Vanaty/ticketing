@@ -65,13 +65,13 @@ List<Reservation> reservations = (List<Reservation>) request.getAttribute("reser
                                         <td>
                                             <span class="badge 
                                                 <% 
-                                                    if ("CONFIRMED".equals(reservation.getStatus())) { 
+                                                    if (Status.CONFIRMED.equals(reservation.getStatus())) { 
                                                         out.print("bg-success"); 
-                                                    } else if ("PENDING".equals(reservation.getStatus())) { 
+                                                    } else if (Status.PENDING.equals(reservation.getStatus())) { 
                                                         out.print("bg-warning"); 
-                                                    } else if ("CANCELLED".equals(reservation.getStatus())) { 
+                                                    } else if (Status.CANCELLED.equals(reservation.getStatus())) { 
                                                         out.print("bg-danger"); 
-                                                    } else { 
+                                                    } else {
                                                         out.print("bg-secondary"); 
                                                     } 
                                                 %>">
