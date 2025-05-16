@@ -14,7 +14,11 @@ import mg.itu.entity.VolSummary;
 
 public class ReservationService {
 
+    PromotionService ps = new PromotionService();
+
     public Reservation createReservation(Reservation reservation) throws Exception {
+        ps.appliquerPromotion(reservation);
+        
         double sumPrix = 0;
         int sumPers = 0;
         for (ReservationDetail rd : reservation.getDetails()) {

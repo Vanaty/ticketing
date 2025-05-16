@@ -74,6 +74,10 @@ public class Vol {
         return promotions.stream().filter(p -> p.isPromotionActive(date)).findFirst().orElse(new Promotion());
     }
 
+    public void setPromotions(List<Promotion> ps) {
+        this.promotions = ps;
+    }
+
     public PrixVol getPrixVol(TypeSiege typeSiege) {
         return prixVols.stream()
         .filter(p -> p.getTypeSiege().getId().intValue() == typeSiege.getId().intValue())

@@ -57,7 +57,7 @@ public class ReservationDAO {
             if (reservation.getId() != null) {
                 reservation = em.merge(reservation); // Use merge for detached entities
             } else {
-                em.persist(reservation); // Use persist for new entities
+                em.persist(reservation);
             }
             et.commit();
             return reservation;

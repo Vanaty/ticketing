@@ -79,7 +79,7 @@
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title text-danger" id="errorModalLabel">Erreur</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
@@ -87,14 +87,18 @@
                                     <%= errorMessage %>
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">OK</button>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <script>
                         document.addEventListener("DOMContentLoaded", function() {
-                            $('#errorModal').modal('show');
+                            var errorModal = document.getElementById('errorModal');
+                            if (errorModal) {
+                                var modal = new bootstrap.Modal(errorModal);
+                                modal.show();
+                            }
                         });
                     </script>
                 <% } %>
