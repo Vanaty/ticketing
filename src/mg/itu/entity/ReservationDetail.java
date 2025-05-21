@@ -35,6 +35,7 @@ public class ReservationDetail {
     private Double prixNormale;
     private Double pourcRed;
     private Integer nbrPersonnes;
+    private Integer nbrPlaceEnProm = 0;
     private Double prix;
 
 
@@ -64,10 +65,11 @@ public class ReservationDetail {
 
     private void setAllPrix() throws Exception {
         PrixVol pv = PrixVolDAO.findByIdTypeSiegeAndVol(getTypeSiege().getId(), reservation.getIdVol());
-        double prix = pv.getPrixApresPromotion(reservation.getDaty().toLocalDate());
+        double prix = pv.getPrix();
         prix = prix * getNbrPersonnes() * (1 - getPricingRule().getDiscountPercentage() / 100);
         setPrixNormale(pv.getPrix() * (1 - getPricingRule().getDiscountPercentage() / 100));
-        setPourcRed(VolDAO.findByIdWithBatchPromotion(reservation.getIdVol()).getPromotionActive(reservation.getDaty().toLocalDate()).getPourcentageReduction());
+        // setPourcRed(VolDAO.findByIdWithBatchPromotion(reservation.getIdVol()).getPromotionActive(reservation.getDaty().toLocalDate()).getPourcentageReduction());
+        setPourcRed(Double.valueOf(0));
         setPrix(prix);
     }
 
@@ -143,5 +145,14 @@ public class ReservationDetail {
         this.setPricingRule(PricingRuleDAO.findById(idPricingRule));
         this.idPricingRule = idPricingRule;
     }
+
+    public Integer getNbrPlaceEnProm() {
+        return nbrPlaceEnProm;
+    }
+
+    public void setNbrPlaceEnProm(Integer nbrPlaceEnProm) {
+        this.nbrPlaceEnProm = nbrPlaceEnProm;
+    }
+    
 }
 

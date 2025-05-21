@@ -63,7 +63,15 @@ public class ReservationController {
             rDts.add(rd);
         }
         res.setDetails(rDts);
-        reservationService.createReservation(res);
+
+        
+        try {
+            res = reservationService.createReservation(res);
+        } catch (Exception e) {
+            ModelView mv = new ModelView("/reservation/creation?id=" + res.getVol().getId(), "GET");
+            mv.addObject("errorMessage", e.getMessage());
+            return mv;
+        }
         ModelView mv = new ModelView("/front/facture-reservation.jsp");
         mv.addObject("res", res);
         return mv;

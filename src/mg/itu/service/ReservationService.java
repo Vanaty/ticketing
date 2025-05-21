@@ -4,14 +4,21 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import mg.itu.dao.ReservationDAO;
+import mg.itu.dao.VolDAO;
+import mg.itu.entity.Config;
 import mg.itu.entity.Reservation;
 import mg.itu.entity.ReservationDetail;
 import mg.itu.entity.Status;
 import mg.itu.entity.Vol;
+import mg.itu.entity.VolSummary;
 
 public class ReservationService {
 
+    PromotionService ps = new PromotionService();
+
     public Reservation createReservation(Reservation reservation) throws Exception {
+        ps.appliquerPromotion(reservation);
+        
         double sumPrix = 0;
         int sumPers = 0;
         for (ReservationDetail rd : reservation.getDetails()) {
@@ -20,6 +27,19 @@ public class ReservationService {
         }
         reservation.setNbrPlaces(sumPers);
         reservation.setPrixTotal(sumPrix);
+
+        VolSummary vs = VolDAO.findSummaryById(reservation.getVol().getId());
+        Config conf = ReservationDAO.getConfig();
+        LocalDateTime dateReservationFinal = LocalDateTime.of(vs.getDtDepart(),vs.getHeureDepart()).minusHours(conf.getReservationBeforeHours());
+        if (vs == null) {
+            throw new Exception("Flight not found.");
+        }
+        if (reservation.getNbrPlaces() > vs.getNbrSiegeLibre()) {
+            throw new Exception("Not enough seats available.");
+        }
+        if (reservation.getDaty().isAfter(dateReservationFinal)) {
+            throw new Exception("Reservation time limit exceeded ("+dateReservationFinal.toString()+").");
+        }
         return ReservationDAO.save(reservation);
     }
 

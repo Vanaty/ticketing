@@ -8,20 +8,25 @@ import javax.persistence.Query;
 
 import mg.itu.entity.Utilisateur;
 import mg.itu.util.JpaConfiguration;
+import org.mindrot.jbcrypt.BCrypt;
 
 public class AuthDAO {
     private static final EntityManagerFactory emf = JpaConfiguration.createEntityManagerFactory();
     
     public static Utilisateur findByUP(Utilisateur u) throws Exception {
         EntityManager em = emf.createEntityManager();
-        StringBuilder sb = new StringBuilder("SELECT u FROM Utilisateur u WHERE u.password = :pass AND u.nom = :nom ");
         try {
-            Query query =  em.createQuery(sb.toString());
+            Query query = em.createQuery("SELECT u FROM Utilisateur u WHERE u.nom = :nom");
             query.setParameter("nom", u.getNom());
-            query.setParameter("pass", u.getPassword());
-            return (Utilisateur) query.getResultList().get(0);
-        } catch(IndexOutOfBoundsException ee) {
-            throw new Exception("Mots de passe ou Nom invalide");
+            List<Utilisateur> users = query.getResultList();
+            if (users.isEmpty()) {
+                throw new Exception("Nom invalide");
+            }
+            Utilisateur user = users.get(0);
+            if (!BCrypt.checkpw(u.getPassword(), user.getPassword())) {
+                throw new Exception("Mots de passe invalide");
+            }
+            return user;
         } finally {
             em.close();
         }

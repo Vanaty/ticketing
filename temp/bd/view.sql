@@ -5,7 +5,7 @@ SELECT
     v.*,
     COALESCE(sum(s.nbr), 0) as nbrSiege,
     COALESCE(sum(r.nbrplaces),0) as nbrSiegeReservee,
-    COALESCE(sum(r.nbrplaces) - sum(r.nbrplacesannuller),0) as nbrSiegeLibre,
+    COALESCE(sum(s.nbr) - sum(r.nbrplaces) + sum(r.nbrplacesannuller),0) as nbrSiegeLibre,
     COALESCE(sum(r.prixtotal),0) as prixtotal
 FROM 
     Vol v
@@ -15,3 +15,4 @@ LEFT JOIN
     Siege s ON s.id_avion = v.id_avion 
 GROUP BY v.id,v.id_avion,v.id_ville_dep,v.id_ville_arr,v.datedepart,v.heuredepart,v.duree;
 
+DROP VIEW IF EXISTS vol_summary CASCADE;

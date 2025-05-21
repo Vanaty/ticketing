@@ -33,6 +33,8 @@ public class Promotion {
     @Range(min = 1)
     private int nbrSiege;
 
+    private int nbrSReserve = 0;
+
     @NotNull
     private LocalDate dateDebut;
     
@@ -42,9 +44,10 @@ public class Promotion {
 
 
     public boolean isPromotionActive(LocalDate date) {
-        return (date.isAfter(dateDebut) || date.isEqual(dateDebut)) && (date.isBefore(dateFin) || date.isEqual(dateFin)) && active;
+        return (date.isAfter(dateDebut) || date.isEqual(dateDebut)) && (date.isBefore(dateFin) || date.isEqual(dateFin)) && active && getNbrSiegeDispo() > 0;
     }
 
+    
     public Integer getId() {
         return id;
     }
@@ -99,6 +102,19 @@ public class Promotion {
     public void setNbrSiege(int nbrSiege) {
         this.nbrSiege = nbrSiege;
     }
+
+
+    public int getNbrSReserve() {
+        return nbrSReserve;
+    }
+
+
+    public void setNbrSReserve(int nbrSReserve) {
+        this.nbrSReserve = nbrSReserve;
+    }
     
+    public int getNbrSiegeDispo() {
+        return nbrSiege - nbrSReserve;
+    }
 }
 
