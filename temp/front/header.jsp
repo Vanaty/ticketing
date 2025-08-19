@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Liste des Vols</title>
     <link href="<%=request.getContextPath()%>/assets/assets/plugins/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%=request.getContextPath()%>/assets/css/all.min.css">
     <style>
         body {
             display: flex;
@@ -36,7 +37,7 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a class="nav-link" href="#">Accueil</a></li>
                     <li class="nav-item"><a class="nav-link" href="<%=request.getContextPath()%>/">Vols</a></li>
-                    <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath() %>/reservation/creation">Réservation</a></li>
+                    <li class="nav-item"><a class="nav-link" href="<%= request.getContextPath() %>/reservation">Réservation</a></li>
                     <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
                 </ul>
             </div>

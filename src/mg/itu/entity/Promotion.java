@@ -33,6 +33,7 @@ public class Promotion {
     @Range(min = 1)
     private int nbrSiege;
 
+    @Transient
     private int nbrSReserve = 0;
 
     @NotNull

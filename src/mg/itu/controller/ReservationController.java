@@ -1,5 +1,9 @@
 package mg.itu.controller;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,20 +11,18 @@ import mg.itu.annotation.Controleur;
 import mg.itu.annotation.GET;
 import mg.itu.annotation.POST;
 import mg.itu.annotation.Param;
-import mg.itu.annotation.Restapi;
 import mg.itu.annotation.Security;
 import mg.itu.annotation.Url;
 import mg.itu.controleur.ModelView;
-import mg.itu.dao.AvionDAO;
 import mg.itu.dao.PricingRuleDAO;
 import mg.itu.dao.ReservationDAO;
 import mg.itu.dao.TypeSiegeDAO;
-import mg.itu.dao.VilleDessevieDAO;
 import mg.itu.dao.VolDAO;
 import mg.itu.entity.Reservation;
 import mg.itu.entity.ReservationDetail;
 import mg.itu.service.ReservationService;
-import mg.itu.type.VolSearch;
+import mg.itu.util.ConfigUtil;
+import mg.itu.util.File;
 
 @Controleur(path = "/reservation")
 public class ReservationController {
@@ -101,5 +103,39 @@ public class ReservationController {
         ModelView mv = new ModelView("/front/facture-reservation.jsp");
         mv.addObject("res", res);
         return mv;
+    }
+
+    @GET
+    @Url("/pdf")
+    public File exportPdf(@Param("id") Integer id) throws IOException {
+        String baseUrl = ConfigUtil.getProperty("pdf.api.url");
+        String apiUrl = baseUrl + id + "/pdf";
+        URL url = new URL(apiUrl);
+        System.out.println("Fetching PDF from: " + url.toString());
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            InputStream inputStream = connection.getInputStream();
+            
+            java.io.ByteArrayOutputStream buffer = new java.io.ByteArrayOutputStream();
+            int nRead;
+            byte[] data = new byte[1024];
+            while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+                buffer.write(data, 0, nRead);
+            }
+            buffer.flush();
+            
+            File file = new File();
+            file.setName("reservation-" + id + ".pdf");
+            file.setContent(buffer.toByteArray());
+            file.setContentType("application/pdf");
+            System.out.println("PDF fetched successfully, size: " + file.getContent().length + " bytes");
+            
+            return file;
+        } else {
+            throw new IOException("Failed to fetch PDF from API, response code: " + responseCode);
+        }
     }
 }
