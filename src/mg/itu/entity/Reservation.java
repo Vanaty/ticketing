@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -41,6 +42,9 @@ public class Reservation {
     
     @NotNull
     private LocalDateTime daty;
+
+    @Column(name = "passport_image_path")
+    private String passportImagePath = "image.png";
 
     // Field Form
     @Transient
